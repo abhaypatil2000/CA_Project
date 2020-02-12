@@ -13,10 +13,17 @@ mnemonic = {
 
 
 def to_IFormat(instruction):
+    number_of_commas = instruction.count(",")
+    if number_of_commas == 1:
+        instruction = instruction.replace(')', '')
+        instruction = instruction.replace('(', ',')
     instruction = instruction.replace(' ', ',')
     instruction_arr = instruction.split(',')
     while '' in instruction_arr:
         instruction_arr.remove('')
+    if number_of_commas == 1:
+        (instruction_arr[2], instruction_arr[3]) = (instruction_arr[3], instruction_arr[2])
+
     machine_code = []
     if int(instruction_arr[3]) < 2**12:
         machine_code.append(bin(int(instruction_arr[3])).replace("0b", "").rjust(12, '0'))
@@ -32,3 +39,4 @@ def to_IFormat(instruction):
     print(machine_code)
 
 to_IFormat("addi x1, x2, 300")
+to_IFormat("lb x1, 10(x2)")
