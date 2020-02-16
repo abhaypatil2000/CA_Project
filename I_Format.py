@@ -1,5 +1,5 @@
 import re
-from UJU_format import UJU_Format
+from UJU_Format import UJU_Format
 
 mnemonic_I = {
     'addi': {'opcode': '0010011', 'funct3': '000', 'type': 'value', 'label': False},
@@ -13,7 +13,7 @@ mnemonic_I = {
 }
 #addi, andi, ori, lb, ld, lh, lw, jalr
 
-def to_IFormat(instruction):
+def I_Format(instruction):
     instruction = instruction.replace(',', ' ')
     pattern = re.compile(r'(\w+)\s+(\w+)\s+(\w+)(\s+)?(.+)?')
     matches = pattern.search(instruction)
@@ -32,7 +32,7 @@ def to_IFormat(instruction):
         addr = matches.group(3)
         UJU_Format('lui x{} {}'.format(rs, addr[0:6]))
         # print("2")
-        machine_code = to_IFormat(mnemonic + ' ' + rs + ' 0(' + rs + ')' )
+        machine_code = I_Format(mnemonic + ' ' + rs + ' 0(' + rs + ')' )
     else:
         rs = matches.group(5)
         rs = rs.replace('(', '')
@@ -47,9 +47,9 @@ def to_IFormat(instruction):
         machine_code.append(mnemonic_I[mnemonic]['funct3'])
         machine_code.append(bin(int(rd)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['opcode'])
-        print(machine_code)
+    #    print(machine_code)
     return machine_code
 
 
 
-to_IFormat("lw x2, 0x10000008")
+#I_Format("lw x2, 0x10000008")

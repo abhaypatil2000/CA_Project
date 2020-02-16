@@ -25,8 +25,8 @@ def UJU_Format(instruction):#check for negative numbers
 
 	machine_code = imm_final + rd + op
 
-	print(machine_code)
+	#print(machine_code)
 	return machine_code
 #	print(opc, op, rd, imm_temp, imm_final)
 
-UJU_Format("lui x3, 0x12AB7")
+#UJU_Format("lui x3, 0x12AB7")

@@ -1,4 +1,5 @@
-from I_format.py import *
+from UJU_Format import *
+from I_Format import *
 def main():
 	file_read = open("input.txt", "r")
 	file_write = open("output.txt", "w")
@@ -9,5 +10,7 @@ def main():
 	file_write.writelines(x)
 	file_read.close()
 	file_write.close()
-	to_IFormat("addi x1, x2, 300")
+	a = UJU_Format("lui x3, 0x12AB7")
+	b = I_Format("lw x2, 0x10000008")
+	print(a, '\n\n',b)
 main()
