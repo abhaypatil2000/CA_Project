@@ -1,16 +1,16 @@
-mnemonic = {
-    'addi': {'opcode': '0010011', 'funct3': '000'},
-    'andi': {'opcode': '0010011', 'funct3': '111'},
-    'ori': {'opcode': '0010011', 'funct3': '110'},
-    'lb': {'opcode': '0000011', 'funct3': '000'},
-    'ld': {'opcode': '0000011', 'funct3': '011'},
-    'lh': {'opcode': '0000011', 'funct3': '001'},
-    'lw': {'opcode': '0000011', 'funct3': '010'},
-    'jalr': {'opcode': '1100111', 'funct3': '000'}
+import re
+
+mnemonic_I = {
+    'addi': {'opcode': '0010011', 'funct3': '000', 'type': 'value', 'label': False},
+    'andi': {'opcode': '0010011', 'funct3': '111', 'type': 'value', 'label': False},
+    'ori': {'opcode': '0010011', 'funct3': '110', 'type': 'value', 'label': False},
+    'lb': {'opcode': '0000011', 'funct3': '000', 'type': 'offset', 'label': True},
+    'ld': {'opcode': '0000011', 'funct3': '011', 'type': 'offset', 'label': True},
+    'lh': {'opcode': '0000011', 'funct3': '001', 'type': 'offset', 'label': True},
+    'lw': {'opcode': '0000011', 'funct3': '010', 'type': 'offset', 'label': True},
+    'jalr': {'opcode': '1100111', 'funct3': '000', 'type': 'both', 'label': True}
 }
 #addi, andi, ori, lb, ld, lh, lw, jalr
-
-
 
 def to_IFormat(instruction):
     number_of_commas = instruction.count(",")
