@@ -1,3 +1,5 @@
+
+
 from UJU_Format import *
 from I_Format import *
 def main():
@@ -12,5 +14,5 @@ def main():
 	file_write.close()
 	a = UJU_Format("lui x3, 0x12AB7")
 	b = I_Format("lw x2, 0x10000008")
-	print(a, '\n\n',b)
+	print(a+'\n\n'+b)
 main()

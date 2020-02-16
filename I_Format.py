@@ -12,8 +12,10 @@ mnemonic_I = {
     'jalr': {'opcode': '1100111', 'funct3': '000', 'type': 'both', 'label': True}
 }
 #addi, andi, ori, lb, ld, lh, lw, jalr
-
 def I_Format(instruction):
+	return I_Format0(instruction, 0)
+
+def I_Format0(instruction, x):
     instruction = instruction.replace(',', ' ')
     pattern = re.compile(r'(\w+)\s+(\w+)\s+(\w+)(\s+)?(.+)?')
     matches = pattern.search(instruction)
@@ -32,7 +34,7 @@ def I_Format(instruction):
         addr = matches.group(3)
         UJU_Format('lui x{} {}'.format(rs, addr[0:6]))
         # print("2")
-        machine_code = I_Format(mnemonic + ' ' + rs + ' 0(' + rs + ')' )
+        machine_code = I_Format0(mnemonic + ' ' + rs + ' 0(' + rs + ')', x + 1)
     else:
         rs = matches.group(5)
         rs = rs.replace('(', '')
@@ -47,7 +49,9 @@ def I_Format(instruction):
         machine_code.append(mnemonic_I[mnemonic]['funct3'])
         machine_code.append(bin(int(rd)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['opcode'])
-    #    print(machine_code)
+     #   print(machine_code)
+    if (x == 0):
+        return (''.join(machine_code))
     return machine_code
 
 
