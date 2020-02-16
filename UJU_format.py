@@ -17,16 +17,16 @@ def UJU_Format(instruction):#check for negative numbers
 	op = str(mnemonic[op]['opcode'])
 	rd = str(bin(int(rd.replace('x', '')))).replace('0b', '').rjust(5, '0')
 	imm_temp = str(bin(int(imm_temp, 0))).replace('0b', '').rjust(32, '0')[11:32]##now we have 21 bits from lsb excl
-	
+
 	if (opc == 'jal'):#exclude the imm[21]
 		imm_final = imm_temp[0] + imm_temp[10:20] + imm_temp[9] + imm_temp[1:9]
 	else:#if lui or addi
 		imm_final = imm_temp[1:21]
-	
+
 	machine_code = imm_final + rd + op
 
 	print(machine_code)
-
+	return machine_code
 #	print(opc, op, rd, imm_temp, imm_final)
 
 UJU_Format("lui x3, 0x12AB7")
