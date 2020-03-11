@@ -1,4 +1,2 @@
-hello world
-abhay
-patil
-abhay
+lui x3, 0x12AB7
+lw x2, 0x10000008
