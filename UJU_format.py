@@ -1,6 +1,6 @@
 mnemonic = {
-		'lui' : {'opcode' : '0110111'},
-		'auipc' : {'opcode' : '0010111'},
+		'lui' : {'opcode' : '0110111'},#U format
+		'auipc' : {'opcode' : '0010111'},#UJ format
 		'jal' : {'opcode' : '1101111'}
 		}
 
