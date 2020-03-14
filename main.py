@@ -17,6 +17,9 @@ text_ptr = 0x00000000
 heap_ptr = 0x10007fe8
 prog_ptr = 0x00000000
 
+memory = {}
+for i in range(0, 2147483644):
+	memory[str(hex(i))] = 0
 
 def main1():
 	file_read = open("input.txt", "r")
@@ -31,7 +34,7 @@ def main1():
 	a = UJU_Format("lui x3, 0x12AB7")
 	b = I_Format("lw x2, 0x10000008")
 	print(a+'\n'+b)
-	
+
 
 
 def main2():
@@ -40,11 +43,8 @@ def main2():
 	execute()
 	memaccess()
 	update()
-	
-	
-	
-main1():
-	
-	
-	
-	
+
+
+
+def main1():
+	pass
