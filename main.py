@@ -15,7 +15,7 @@ reg_file = {
 data_ptr = 0x00000000
 text_ptr = 0x10000000
 heap_ptr = 0x10007fe8
-
+prog_ptr = 0x00000000
 memory_ptrs = (data_ptr, text_ptr, heap_ptr, prog_ptr)
 
 memory = {}
