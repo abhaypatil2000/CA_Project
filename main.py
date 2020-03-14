@@ -12,8 +12,8 @@ reg_file = {
 		'x28' : 0, 'x29' : 0, 'x30' : 0, 'x31' : 0,
 		}
 
-data_ptr = 0x00000000
-text_ptr = 0x10000000
+data_ptr = 0x10000000
+text_ptr = 0x00000000
 heap_ptr = 0x10007fe8
 prog_ptr = 0x00000000
 memory_ptrs = (data_ptr, text_ptr, heap_ptr, prog_ptr)
