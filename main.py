@@ -12,14 +12,11 @@ reg_file = {
 		'x28' : 0, 'x29' : 0, 'x30' : 0, 'x31' : 0,
 		}
 
-data_ptr = 0x10000000
-text_ptr = 0x00000000
+data_ptr = 0x00000000
+text_ptr = 0x10000000
 heap_ptr = 0x10007fe8
-prog_ptr = 0x00000000
 
-memory = {}
-for i in range(0, 2147483644):
-	memory[str(hex(i))] = 0
+
 
 def main1():
 	file_read = open("input.txt", "r")
@@ -34,17 +31,10 @@ def main1():
 	a = UJU_Format("lui x3, 0x12AB7")
 	b = I_Format("lw x2, 0x10000008")
 	print(a+'\n'+b)
-
+	
 
 
 def main2():
-	fetch(prog_ptr)
-	decode()
-	execute()
-	memaccess()
-	update()
-
-
-
-def main1():
-	pass
+	
+	
+main1()
