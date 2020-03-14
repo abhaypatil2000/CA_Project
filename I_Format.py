@@ -1,5 +1,5 @@
 import re
-from UJU_format import UJU_Format
+from UJU_Format import UJU_Format
 
 mnemonic_I = {
     'addi': {'opcode': '0010011', 'funct3': '000', 'type': 'value', 'label': False},
