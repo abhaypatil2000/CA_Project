@@ -1,4 +1,4 @@
-from UJU_format import *
+from UJU_Format import *
 from I_Format import *
 
 reg_file = {
