@@ -1,4 +1,4 @@
-from UJU_Format import *
+from UJU_format import *
 from I_Format import *
 
 reg_file = {
@@ -17,9 +17,14 @@ text_ptr = 0x00000000
 heap_ptr = 0x10007fe8
 prog_ptr = 0x00000000
 
+memory_ptrs = (data_ptr, text_ptr, heap_ptr, prog_ptr)
+
 memory = {}
-for i in range(0, 2147483644):
-	memory[str(hex(i))] = 0
+
+RY, RZ, RM, RA, RB = 0, 0, 0, 0, 0
+temp_registers = (RA, RB, RY, RZ, RM)
+
+temp_registers
 
 def main1():
 	file_read = open("input.txt", "r")
@@ -46,5 +51,4 @@ def main2():
 
 
 
-def main1():
-	pass
+main1()
