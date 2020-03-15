@@ -13,6 +13,8 @@ reg_file = {
 #RB is the second operand of the ALU
 #tempdrd contains the register to which we will write
 
+prog_ptr = 123
+
 def Decode(x):#x is a string
 	decode_op = x[25:32]#op is the opcode
 	R_dop = ['0110011']#decode opcode
@@ -64,14 +66,14 @@ def Decode(x):#x is a string
 			RB = int(x[0:20].ljust(32, '0'), 2)
 			RA = prog_ptr
 		elif (decode_op == '1101111'): # jal
-			RB = int((x[0] + x[12:20] + x[11] + x[1:11]).ljust(32, '0'), 2)
+			RB = 2 * int(x[0:20], 2)
+			#RB = int((x[0] + x[12:20] + x[11] + x[1:11]).ljust(32, '0'), 2)
 			RA = prog_ptr
 		
 #in the end do reg_file[tempdrd] = RY
-			
-Decode('0000100'+'11011'+'10010'+'000'+'10010'+'0100011')
-	
-#print(int('1001', 2))
+
+
+Decode('00000000000000000110000111101111') #jal x3, 12
 
 
 
