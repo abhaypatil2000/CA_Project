@@ -161,5 +161,14 @@ fp = open("1.mc", "r+")
 for line in fp:
     inst = line.split(' ')
     a = int(inst[0], 16)
-    TempMem[a] = inst[1]
-
+    b = inst[1][1:]
+    if(len(b)==8):
+        TempMem[a] = b[6:]
+        TempMem[a+1] = b[4:6]
+        TempMem[a+2] = b[2:4]
+        TempMem[a+3] = b[0:2]
+    elif(len(b)==4):
+        TempMem[a] = b[2:]
+        TempMem[a+1] = b[0:2]
+    else:
+        TempMem[a] = b
