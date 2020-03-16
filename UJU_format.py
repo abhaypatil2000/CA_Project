@@ -12,7 +12,7 @@ def UJU_Format(instruction):#check for negative numbers
 	opc = ins[0]#mnemonic
 	op = ins[0]#done
 	rd = ins[1]#done
-	
+
 	imm_temp = ins[2]#before the rearrangment or splicing
 	imm_final = ''#after rearrangement
 	op = str(mnemonic[op]['opcode'])

@@ -6,9 +6,7 @@ def main1():
 	file_read = open("input.txt", "r")
 	file_write = open("output.txt", "w")
 	x = file_read.readlines()
-#	print (x)
-#	for i in x:
-#		file_write.write(i)
+	print(x)
 	file_write.writelines(x)
 	file_read.close()
 	file_write.close()
