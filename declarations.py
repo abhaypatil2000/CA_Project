@@ -6,7 +6,7 @@ MemtoReg = 0
 MemWrite = 0
 ALUSrc1 = 0
 ALUSrc2 = 0
-PCSrc = 0
+PCSrc = -1
 PCReg = 0 #Signal if the PC is updated by the Register value
 
 #Register File inputs and Outputs
@@ -23,6 +23,10 @@ ImmGenOutput = 0
 
 #ALU Control
 ALUControl = 0
+
+#ALUinputs
+ALU_input1 = 0
+ALU_input2 = 0
 
 #PC
 PC = 0
@@ -42,6 +46,8 @@ Address = 0
 WriteData = 0
 ReadData = 0
 
+#Exit Signal
+EXIT = False
 #Registers
 reg_file = {
 		'x0' : 0, 'x1' : 0, 'x2' : 0x7ffffffc, 'x3' : 0,
@@ -60,11 +66,15 @@ clock = 0
 #TempMem
 TempMem = {}
 def initialize_mem():
+    global TempMem
+    TempMem.clear()
     fp = open("1.mc", "r+")
     for line in fp:
+        if(line == ''):
+            break
         inst = line.split()
         a = int(inst[0], 16)
-        b = inst[1][1:]
+        b = inst[1][2:]
         if(len(b)==8):
             TempMem[a] = b[6:]
             TempMem[a+1] = b[4:6]
@@ -75,7 +85,31 @@ def initialize_mem():
             TempMem[a+1] = b[0:2]
         else:
             TempMem[a] = b
+    fp.close()
+def exit_routine():
+    global TempMem
+    global clock
+    fp = open("1.mc", "r+")
+    for i in TempMem.keys():
+        fp.write(hex(i) + " " + '0x'+TempMem[i]+'\n')
+    fp.close()
+def reset():
+    initialize_mem()
+    global reg_file
+    reg_file = {
+		'x0' : 0, 'x1' : 0, 'x2' : 0x7ffffffc, 'x3' : 0,
+		'x4' : 0, 'x5' : 0, 'x6' : 0, 'x7' : 0,
+		'x8' : 0, 'x9' : 0, 'x10' : 0, 'x11' : 0,
+		'x12' : 0, 'x13' : 0, 'x14' : 0, 'x15' : 0,
+		'x16' : 0, 'x17' : 0, 'x18' : 0, 'x19' : 0,
+		'x20' : 0, 'x21' : 0, 'x22' : 0, 'x23' : 0,
+		'x24' : 0, 'x25' : 0, 'x26' : 0, 'x27' : 0,
+		'x28' : 0, 'x29' : 0, 'x30' : 0, 'x31' : 0,
+		}
+    global clock
+    clock = 0
 def read_byte(address):
+    global TempMem
     if address in TempMem.keys():
         return TempMem[address]
     else:
@@ -85,6 +119,7 @@ def read_word(address):
 def read_hword(address):
     return read_byte(address+1)+read_byte(address)
 def write_byte(address, data):
+    global TempMem
     TempMem[address] = data
 def write_word(address, data):
     write_byte(address,data[6:])
