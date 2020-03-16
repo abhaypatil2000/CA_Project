@@ -18,6 +18,8 @@ def main1():
 		lines2.append(line2)
 	lines = lines2.copy()
 	print(lines)
+	for i in range(len(lines)):
+		parse(lines[i], i+1)
 	file_write.writelines(lines)
 	file_read.close()
 	file_write.close()
