@@ -1,0 +1,1 @@
+addi x1 x0 1 addi x2 x0 2 bge x0 x0 label addi x4 x0 5 label: add x3 x2 x1 
