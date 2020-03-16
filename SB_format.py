@@ -39,6 +39,6 @@ def SB_format(instruction):
         
     machine_bin=machine_code[0]+machine_code[1]+machine_code[2]+machine_code[3]+machine_code[4]+machine_code[5]+machine_code[6]+machine_code[7]
     machine_hex="{:08x}".format((int(machine_bin,2)))
-    print ("0x" + machine_hex)
+    return "0x" + machine_hex
     
-SB_format("bne x1,x2,4")
+print(SB_format("bne x1,x2,4"))

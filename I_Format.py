@@ -1,5 +1,5 @@
 import re
-from UJU_Format import UJU_Format
+from UJU_format import UJU_Format
 
 mnemonic_I = {
     'addi': {'opcode': '0010011', 'funct3': '000', 'type': 'value', 'label': False},
@@ -51,9 +51,12 @@ def I_Format0(instruction, x):
         machine_code.append(mnemonic_I[mnemonic]['opcode'])
      #   print(machine_code)
     if (x == 0):
-        return (''.join(machine_code))
+        machine_hex="{:08x}".format(int(''.join(machine_code),2))
+        return "0x"+machine_hex
     return machine_code
+    
 
 
 
-# I_Format("lw x2, 0x10000008")
+
+print(I_Format("lw x2, 0x10000008"))

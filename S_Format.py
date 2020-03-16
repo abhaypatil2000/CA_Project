@@ -30,7 +30,7 @@ def SFormat(instruction):
     machine_code.append(mnemonic[instruction_arr[0]]['funct3'])
     machine_code.append(imm2)
     machine_code.append(mnemonic[instruction_arr[0]]['opcode'])
-    return(''.join(machine_code))
+    machine_hex="{:08x}".format(int(''.join(machine_code),2))
+    return "0x"+machine_hex
 
-#abc=SFormat("sb x1, 10(x2)")
-#print (abc)
+print(SFormat("sb x1, 10(x2)"))

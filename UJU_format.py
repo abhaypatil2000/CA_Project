@@ -25,9 +25,8 @@ def UJU_Format(instruction):#check for negative numbers
 		imm_final = imm_temp[1:21]
 
 	machine_code = imm_final + rd + op
-
-	#print(machine_code)
-	return machine_code
+	machine_hex="{:08x}".format((int(machine_code,2)))
+	return "0x"+machine_hex
 #	print(opc, op, rd, imm_temp, imm_final)
 
-print(UJU_Format("jal x3, 12"))
+#print(UJU_Format("jal x3, 12"))
