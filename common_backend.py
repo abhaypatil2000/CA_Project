@@ -9,6 +9,9 @@ reg_file = {
 		'x28' : 0, 'x29' : 0, 'x30' : 0, 'x31' : 31,
 		}
 
+label_dict = {}
+
+
 data_ptr = 0x10000000
 text_ptr = 0x00000000
 heap_ptr = 0x10007fe8

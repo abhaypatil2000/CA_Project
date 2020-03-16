@@ -7,8 +7,8 @@ def main1():
 	file_read = open("input.txt", "r")
 	file_write = open("output.txt", "w")
 	lines = file_read.readlines()
-	for line in lines:
-		parse(line)
+	for i in range(len(lines)):
+		parse(lines[i], i+1)
 
 	print(x)
 	file_write.writelines(x)
