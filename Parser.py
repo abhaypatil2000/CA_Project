@@ -2,7 +2,7 @@ import re
 from common_backend import *
 
 def parse(line):
-    label = re.compile((\w+)\:)
+    label = re.compile($(\w+)\:)
     label_matches = label.search(line)
 
     instruction = re.compile(((\w+)\s)+)
