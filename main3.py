@@ -203,7 +203,7 @@ def fetch():
     ReadAddress = PC
     Instruction = "{:032b}".format(int(read_word(ReadAddress),16))
     print("ReadAddress " + str(ReadAddress))
-    print("Instruction " + '0x' + read_word(ReadAddress))
+    print("Instruction " + Instruction)
 def decode():
         #Control Signals
     global Branch 
@@ -267,41 +267,41 @@ def decode():
         EXIT = True
         exit_routine()
     else:
-        Instruction1 = Instruction[::-1]
-        opcode = Instruction1[0:8]
-        func3 = Instruction1[12:15]
-        func7 = Instruction1[25:]
-        ReadRegister1 = int(Instruction1[15:20], 2)
-        ReadRegister2 = int(Instruction1[20:25], 2)
-        WriteRegister = int(Instruction1[7:12], 2)
+        opcode = Instruction[25:]
+        func3 = Instruction[16:19]
+        func7 = Instruction[0:7]
+        print('opcode '+opcode)
+        ReadRegister1 = int(Instruction[12:17], 2)
+        ReadRegister2 = int(Instruction[7:12], 2)
+        WriteRegister = int(Instruction[20:25], 2)
         MemtoReg = 0
         MemRead = 0
         MemWrite = 0
         if(opcode == '0000011' or opcode == '0010011' or opcode == '1100111'):
-            ImmGenOutput = BitArray(bin = Instruction1[20:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:12]).int
             ALUSrc2 = 1
             if(opcode == '0000011'):
                 MemRead = int(func3, 2) + 1
             if(opcode == '0000011'):
                 MemtoReg = 1
-            elif(opcode == '0010011'):
+            elif(opcode == '1100111'):
                 MemtoReg = 2
             ALUSrc1 = 0
         elif(opcode == '0100011'):
-            ImmGenOutput = BitArray(bin = Instruction1[7:12]+Instruction1[25:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:7]+Instruction[20:25]).int
             MemRead = int(func3, 2) + 1
             ALUSrc2 = 3
             ALUSrc1 = 0
         elif(opcode == '1100011'):
-            ImmGenOutput = BitArray(bin = Instruction1[8:13] + Instruction1[25:31] + Instruction1[7] + Instruction1[31]).int
+            ImmGenOutput = BitArray(bin = Instruction[0] + Instruction[24] + Instruction[1:7] + Instruction[20:24]).int
             ALUSrc2 = 0
             ALUSrc1 = 0
         elif(opcode == '0010111' or opcode == '0110111'):
-            ImmGenOutput = BitArray(bin = Instruction1[12:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:20]).int
             ALUSrc2 = 2
             ALUSrc1 = 1 if opcode == '0010111' else 2
         elif(opcode == '1101111'):
-            ImmGenOutput = BitArray(bin = Instruction1[21:31]+Instruction1[20]+Instruction1[12:20]+Instruction1[31]).int
+            ImmGenOutput = BitArray(bin = Instruction[0]+Instruction[12:20]+Instruction[11]+Instruction[1:11]).int
             ALUSrc2 = 3
             ALUSrc1 = 0
             MemtoReg = 2
@@ -310,7 +310,7 @@ def decode():
             ALUSrc2 = 0
             ALUSrc1 = 0
         if(opcode == '1100011'):
-            Branch = int(Instruction1[12:15],2) + 2
+            Branch = int(func3,2) + 2
         else:
             Branch = 0
         PCReg = 1 if opcode == '1100111' else 0
@@ -356,6 +356,8 @@ def decode():
         ReadData1 = reg_file['x' + str(ReadRegister1)]
         ReadData2 = reg_file['x'+str(ReadRegister2)]
         print('PCReg '+str(PCReg))
+        print('Immediate Gen Ouput ' + str(ImmGenOutput))
+        print('Write Reg '+str(WriteRegister))
 def execute():
         #Control Signals
     global Branch 
@@ -461,126 +463,7 @@ def execute():
     GE = 1 if ALU_input1 >= ALU_input2 else 0
     zero = 1 if ALUResult == 0 else 0
     PCSrc = 0
-    opcode = Instruction[::-1][0:8]
-    if(Branch == 1):
-        PCSrc = 1
-    elif(Branch == 2 and zero == 1):
-        PCSrc = 1
-    elif(Branch == 3 and zero == 0):
-        PCSrc = 1
-    elif(Branch == 6 and LessThan == 1):
-        PCSrc = 1
-    elif(Branch == 7 and GE == 1):
-        PCSrc = 1
-    elif(opcode == '1101111'):
-        PCSrc = 1
-    print('PCSrc '+str(PCSrc))
-def execute():
-        #Control Signals
-    global Branch 
-    global MemRead 
-    global MemtoReg 
-    # ALUOp 
-    global MemWrite 
-    global ALUSrc1 
-    global ALUSrc2 
-    global PCSrc 
-    global PCReg  #Signal if the PC is updated by the Register value
-
-    #Register File inputs and Outputs
-    global RegWrite 
-    global ReadData1 
-    global ReadData2 
-    global ReadRegister1 
-    global ReadRegister2 
-    global WriteRegister 
-    global WriteDataRegFile 
-
-    #Immediate Generation
-    global ImmGenOutput 
-
-    #ALU Control
-    global ALUControl 
-
-    #ALUinputs
-    global ALU_input1 
-    global ALU_input2 
-
-    #PC
-    global PC 
-
-    #Instruction Memory
-    global ReadAddress 
-    global Instruction
-
-    #ALU output
-    global Zero 
-    global LessThan 
-    global GE 
-    global ALUResult 
-
-    #Data Memory
-    global Address 
-    global WriteData 
-    global ReadData 
-
-    #Registers
-    global reg_file 
-
-    #clock
-    global clock 
-
-    #TempMem
-    global TempMem
-    #Exit
-    global EXIT
-    if(EXIT):
-        return
-    if(ALUSrc1 == 0):
-        ALU_input1 = ReadData1
-    elif(ALUSrc1 == 1):
-        ALU_input1 = 0
-    else:
-        ALU_input1 = PC
-    if(ALUSrc2 == 0):
-        ALU_input2 = ReadData2
-    elif(ALUSrc2 == 1):
-        ALU_input2 = ImmGenOutput
-    elif(ALUSrc2 == 2):
-        ALU_input2 = ImmGenOutput << 12
-    else:
-        ALU_input2 = ImmGenOutput * 2
-    if(ALUControl == 0):
-        ALUResult = ALU_input1 + ALU_input2
-    elif(ALUControl == 1):
-        ALUResult = ALU_input1 & ALU_input2
-    elif(ALUControl == 2):
-        ALUResult = ALU_input1 | ALU_input2
-    elif(ALUControl == 3):
-        ALUResult = ALU_input1 << ALU_input2
-    elif(ALUControl == 4):
-        ALUResult = 1 if ALU_input1 < ALU_input2 else 0
-    elif(ALUControl == 5):
-        ALUResult = ALU_input1 >> ALU_input2
-    elif(ALUControl == 6):
-        ALUResult = ALU_input1 - ALU_input2
-    elif(ALUControl == 7):
-        ALUResult = ALU_input1 ^ ALU_input2
-    elif(ALUControl == 8):
-        ALUResult = ALU_input1 ^ ALU_input2
-    elif(ALUControl == 9):
-        ALUResult = ALU_input1 * ALU_input2
-    elif(ALUControl == 10):
-        ALUResult = ALU_input1 // ALU_input2
-    else:
-        ALUResult = ALU_input1 % ALU_input2
-    Address = ALUResult
-    WriteData = ReadData2
-    LessThan = 1 if ALU_input1 < ALU_input2 else 0
-    GE = 1 if ALU_input1 >= ALU_input2 else 0
-    zero = 1 if ALUResult == 0 else 0
-    PCSrc = 0
-    opcode = Instruction[::-1][0:8]
+    opcode = Instruction[25:]
     if(Branch == 1):
         PCSrc = 1
     elif(Branch == 2 and zero == 1):
@@ -745,13 +628,13 @@ def writeback():
         return
     if(RegWrite == 1):
         if(MemtoReg == 0):
-            WriteData = ALUResult
+            WriteDataRegFile = ALUResult
         elif(MemtoReg == 1):
-            WriteData = BitArray(hex = ReadData).int
+            WriteDataRegFile = BitArray(hex = ReadData).int
         else:
-            WriteData = PC + 4
+            WriteDataRegFile = PC + 4
         if(MemRead != 4):
-            reg_file['x' + str(WriteRegister)] = WriteData
+            reg_file['x' + str(WriteRegister)] = WriteDataRegFile
         else:
             reg_file['x' + str(WriteRegister)] = BitArray(hex = ReadData[8:]).int
             reg_file['x' + str((WriteRegister + 1) % 32)] = BitArray(hex = ReadData[0:8]).int

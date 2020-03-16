@@ -63,41 +63,41 @@ def decode():
         EXIT = True
         exit_routine()
     else:
-        Instruction1 = Instruction[::-1]
-        opcode = Instruction1[0:8]
-        func3 = Instruction1[12:15]
-        func7 = Instruction1[25:]
-        ReadRegister1 = int(Instruction1[15:20], 2)
-        ReadRegister2 = int(Instruction1[20:25], 2)
-        WriteRegister = int(Instruction1[7:12], 2)
+        opcode = Instruction[25:]
+        func3 = Instruction[16:19]
+        func7 = Instruction[0:7]
+        print('opcode '+opcode)
+        ReadRegister1 = int(Instruction[12:17], 2)
+        ReadRegister2 = int(Instruction[7:12], 2)
+        WriteRegister = int(Instruction[20:25], 2)
         MemtoReg = 0
         MemRead = 0
         MemWrite = 0
         if(opcode == '0000011' or opcode == '0010011' or opcode == '1100111'):
-            ImmGenOutput = BitArray(bin = Instruction1[20:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:12]).int
             ALUSrc2 = 1
             if(opcode == '0000011'):
                 MemRead = int(func3, 2) + 1
             if(opcode == '0000011'):
                 MemtoReg = 1
-            elif(opcode == '0010011'):
+            elif(opcode == '1100111'):
                 MemtoReg = 2
             ALUSrc1 = 0
         elif(opcode == '0100011'):
-            ImmGenOutput = BitArray(bin = Instruction1[7:12]+Instruction1[25:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:7]+Instruction[20:25]).int
             MemRead = int(func3, 2) + 1
             ALUSrc2 = 3
             ALUSrc1 = 0
         elif(opcode == '1100011'):
-            ImmGenOutput = BitArray(bin = Instruction1[8:13] + Instruction1[25:31] + Instruction1[7] + Instruction1[31]).int
+            ImmGenOutput = BitArray(bin = Instruction[0] + Instruction[24] + Instruction[1:7] + Instruction[20:24]).int
             ALUSrc2 = 0
             ALUSrc1 = 0
         elif(opcode == '0010111' or opcode == '0110111'):
-            ImmGenOutput = BitArray(bin = Instruction1[12:]).int
+            ImmGenOutput = BitArray(bin = Instruction[0:20]).int
             ALUSrc2 = 2
             ALUSrc1 = 1 if opcode == '0010111' else 2
         elif(opcode == '1101111'):
-            ImmGenOutput = BitArray(bin = Instruction1[21:31]+Instruction1[20]+Instruction1[12:20]+Instruction1[31]).int
+            ImmGenOutput = BitArray(bin = Instruction[0]+Instruction[12:20]+Instruction[11]+Instruction[1:11]).int
             ALUSrc2 = 3
             ALUSrc1 = 0
             MemtoReg = 2
@@ -106,7 +106,7 @@ def decode():
             ALUSrc2 = 0
             ALUSrc1 = 0
         if(opcode == '1100011'):
-            Branch = int(Instruction1[12:15],2) + 2
+            Branch = int(func3,2) + 2
         else:
             Branch = 0
         PCReg = 1 if opcode == '1100111' else 0
@@ -152,3 +152,5 @@ def decode():
         ReadData1 = reg_file['x' + str(ReadRegister1)]
         ReadData2 = reg_file['x'+str(ReadRegister2)]
         print('PCReg '+str(PCReg))
+        print('Immediate Gen Ouput ' + str(ImmGenOutput))
+        print('Write Reg '+str(WriteRegister))

@@ -173,7 +173,7 @@ def execute():
     GE = 1 if ALU_input1 >= ALU_input2 else 0
     zero = 1 if ALUResult == 0 else 0
     PCSrc = 0
-    opcode = Instruction[::-1][0:8]
+    opcode = Instruction[25:]
     if(Branch == 1):
         PCSrc = 1
     elif(Branch == 2 and zero == 1):
