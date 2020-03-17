@@ -291,7 +291,7 @@ def decode():
         elif(opcode == '0100011'):
             ImmGenOutput = BitArray(bin = Instruction[0:7]+Instruction[20:25]).int
             MemWrite = int(func3, 2) + 1
-            ALUSrc2 = 3
+            ALUSrc2 = 1
             ALUSrc1 = 0
         elif(opcode == '1100011'):
             ImmGenOutput = BitArray(bin = Instruction[0] + Instruction[24] + Instruction[1:7] + Instruction[20:24]).int
