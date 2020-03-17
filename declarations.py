@@ -70,9 +70,9 @@ def initialize_mem():
     TempMem.clear()
     fp = open("1.mc", "r+")
     for line in fp:
-        if(line == ''):
-            break
         inst = line.split()
+        if(len(inst) != 2):
+            break
         a = int(inst[0], 16)
         b = inst[1][2:]
         if(len(b)==8):

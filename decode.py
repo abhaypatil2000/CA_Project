@@ -64,7 +64,7 @@ def decode():
         exit_routine()
     else:
         opcode = Instruction[25:]
-        func3 = Instruction[16:19]
+        func3 = Instruction[17:20]
         func7 = Instruction[0:7]
         print('opcode '+opcode)
         ReadRegister1 = int(Instruction[12:17], 2)
@@ -85,7 +85,7 @@ def decode():
             ALUSrc1 = 0
         elif(opcode == '0100011'):
             ImmGenOutput = BitArray(bin = Instruction[0:7]+Instruction[20:25]).int
-            MemRead = int(func3, 2) + 1
+            MemWrite = int(func3, 2) + 1
             ALUSrc2 = 3
             ALUSrc1 = 0
         elif(opcode == '1100011'):

@@ -71,9 +71,9 @@ def initialize_mem():
     TempMem.clear()
     fp = open("1.mc", "r+")
     for line in fp:
-        if(line == ''):
-            break
         inst = line.split()
+        if(len(inst) != 2):
+            break
         a = int(inst[0], 16)
         b = inst[1][2:]
         if(len(b)==8):
@@ -268,9 +268,10 @@ def decode():
         exit_routine()
     else:
         opcode = Instruction[25:]
-        func3 = Instruction[16:19]
+        func3 = Instruction[17:20]
         func7 = Instruction[0:7]
         print('opcode '+opcode)
+        print('func3 '+func3)
         ReadRegister1 = int(Instruction[12:17], 2)
         ReadRegister2 = int(Instruction[7:12], 2)
         WriteRegister = int(Instruction[20:25], 2)
@@ -289,7 +290,7 @@ def decode():
             ALUSrc1 = 0
         elif(opcode == '0100011'):
             ImmGenOutput = BitArray(bin = Instruction[0:7]+Instruction[20:25]).int
-            MemRead = int(func3, 2) + 1
+            MemWrite = int(func3, 2) + 1
             ALUSrc2 = 3
             ALUSrc1 = 0
         elif(opcode == '1100011'):
@@ -358,6 +359,7 @@ def decode():
         print('PCReg '+str(PCReg))
         print('Immediate Gen Ouput ' + str(ImmGenOutput))
         print('Write Reg '+str(WriteRegister))
+        print("MemWrite " + str(MemWrite))
 def execute():
         #Control Signals
     global Branch 
@@ -653,5 +655,6 @@ def main3():
         clock = clock + 1
         print(clock)
         if(EXIT):
+            print(TempMem)
             break
 main3()
