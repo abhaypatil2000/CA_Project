@@ -98,7 +98,7 @@ def decode():
             ALUSrc1 = 1 if opcode == '0010111' else 2
         elif(opcode == '1101111'):
             ImmGenOutput = BitArray(bin = Instruction[0]+Instruction[12:20]+Instruction[11]+Instruction[1:11]).int
-            ALUSrc2 = 3
+            ALUSrc2 = 0
             ALUSrc1 = 0
             MemtoReg = 2
             Branch = 1

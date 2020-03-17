@@ -141,8 +141,6 @@ def execute():
         ALU_input2 = ImmGenOutput
     elif(ALUSrc2 == 2):
         ALU_input2 = ImmGenOutput << 12
-    else:
-        ALU_input2 = ImmGenOutput * 2
     if(ALUControl == 0):
         ALUResult = ALU_input1 + ALU_input2
     elif(ALUControl == 1):
