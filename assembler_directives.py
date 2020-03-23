@@ -50,14 +50,53 @@ def asembler_directives():
 				elif (lien_list[0] == '.half'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
+					for data in data_list:
+						if (int(data) > 0xffff):
+							raise BigData("data too big to fit")
+						dict[ptr] = int(data) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x100) % 0x100
+						#dict[ptr] = int(int(data) % 0xffff) / 
+						ptr = ptr + 1
+						
 					
 				elif (lien_list[0] == '.word'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
+					for data in data_list:
+						if (int(data) > 0xffffffff):
+							raise BigData("data too big to fit")
+						dict[ptr] = int(data) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x100) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x10000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x1000000) % 0x100
+						ptr = ptr + 1
 					
 				elif (lien_list[0] == '.dword'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
+					for data in data_list:
+						if (int(data) > 0xffffffff):
+							raise BigData("data too big to fit")
+						dict[ptr] = int(data) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x100) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x10000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x1000000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x100000000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x10000000000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x1000000000000) % 0x100
+						ptr = ptr + 1
+						dict[ptr] = int(int(data) / 0x100000000000000) % 0x100
+						ptr = ptr + 1
 					
 				else:
 					raise UnknownAD("unknown assembler directive")
