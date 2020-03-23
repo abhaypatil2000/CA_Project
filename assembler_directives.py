@@ -13,7 +13,7 @@ dict = {}
 ptr = 0
 def asembler_directives():
 	global ptr
-	asmdirinp = open("input.txt", "r")
+	asmdirinp = open("Asmdirinp.txt", "r")
 	inplist = asmdirinp.readlines()
 	for lien in inplist:#lien is line
 		if (lien[-1] == '\n'):
