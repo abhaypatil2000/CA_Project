@@ -17,15 +17,14 @@ def I_Format(instruction):
 
 def I_Format0(instruction, x):
     instruction = instruction.replace(',', ' ')
-    pattern = re.compile(r'(\w+)\s+(\w+)\s+(\w+)(\s+)?(.+)?')
+    pattern = re.compile(r'(\w+)\s+(\w+)\s+(\-?\w+)(\s+)?(.+)?')
+
     matches = pattern.search(instruction)
+
     machine_code = []
     mnemonic = matches.group(1)
     rd = matches.group(2).replace('x', '')
-
-    # for i in range(6):
-    #     print(matches.group(i))
-
+    imm_neg = 0
     if matches.group(4) != None:
         rs = matches.group(3).replace('x', '')
         imm = matches.group(5)
@@ -33,30 +32,43 @@ def I_Format0(instruction, x):
         rs = rd
         addr = matches.group(3)
         UJU_Format('lui x{} {}'.format(rs, addr[0:6]))
-        # print("2")
         machine_code = I_Format0(mnemonic + ' ' + rs + ' 0(' + rs + ')', x + 1)
     else:
         rs = matches.group(5)
         rs = rs.replace('(', '')
         rs = rs.replace(')', '')
         rs = rs.replace('x', '')
-
         imm = matches.group(3)
 
+    if imm[0] == '-':
+        imm = imm.replace('-', '')
+        imm = str(int(imm) - 1)
+        imm_neg = 1
+
+
     if(len(machine_code) != 5):
-        machine_code.append(bin(int(imm)).replace("0b", "").rjust(12, '0'))
+        if imm_neg == 0:
+            machine_code.append(bin(int(imm)).replace("0b", "").rjust(12, '0'))
+        else:
+            imm = bin(int(imm)).replace("0b", "").rjust(12, '0')
+            for i in range(len(imm)):
+                if imm[i] == '0':
+                    imm = imm[:i] + '1' + imm[i+1:]
+                else:
+                    imm = imm[:i] + '0' + imm[i+1:]
+            machine_code.append(imm)
         machine_code.append(bin(int(rs)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['funct3'])
         machine_code.append(bin(int(rd)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['opcode'])
-     #   print(machine_code)
+
     if (x == 0):
         machine_hex="{:08x}".format(int(''.join(machine_code),2))
         return "0x"+machine_hex
     return machine_code
-    
 
 
 
 
-print(I_Format("lw x2, 0x10000008"))
+
+print(I_Format("addi x2 x3 -3"))
