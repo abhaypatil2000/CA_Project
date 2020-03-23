@@ -5,6 +5,39 @@ from SB_format import *
 from S_Format import *
 from common_backend import *
 from Parser import parse
+dict = {
+    'lui':{'type': 'UJU'},
+    'auipc':{'type':'UJU'},
+    'jal':{'type': 'UJU'},
+    'sb': {'type': 'S'},
+    'sh': {'type': 'S'},
+    'sw': {'type': 'S'},
+    'sd': {'type': 'S'},
+    'addi': {'type': 'I'},
+    'andi': {'type': 'I'},
+    'ori': {'type': 'I'},
+    'lb': {'type': 'I'},
+    'ld': {'type': 'I'},
+    'lh': {'type': 'I'},
+    'lw': {'type': 'I'},
+    'jalr': {'type': 'I'},
+    'add':{'type':'R'},
+    'and':{'type':'R'},
+    'or':{'type':'R'}, 
+    'sll':{'type':'R'},
+    'slt':{'type':'R'},
+    'sra':{'type':'R'},
+    'srl':{'type':'R'},
+    'sub':{'type':'R'},
+    'xor':{'type':'R'},
+    'mul':{'type':'R'},
+    'div':{'type':'R'},
+    'rem':{'type':'R'},
+    'beq':{'type':'SB'},
+    'bne':{'type':'SB'},
+    'blt':{'type':'SB'},
+    'bge':{'type':'SB'}
+    }
 
 def main1():
 	file_read = open("input.txt","r")
@@ -17,8 +50,29 @@ def main1():
 		line2=line.replace('\n',' ')
 		lines2.append(line2)
 	lines = lines2.copy()
-	print(lines)
-	file_write.writelines(lines)
+	lines3=[]
+	for x in lines:
+		oper= x.split()[0]
+		#print (x)
+		#print(oper)
+		format_type=dict[oper]['type']
+		#print(format_type)
+		if format_type=='S':
+		    y=S_Format(x)
+		    lines3.append(y)
+		elif format_type=='R':
+		    y=R_Format(x)
+		    lines3.append(y)
+		elif format_type=='I':
+		    y=I_Format(x)
+		    lines3.append(y)
+		elif format_type=='SB':
+		    y=SB_Format(x)
+		    lines3.append(y) 
+		else:
+		    y=UJU_Format(x)
+		    lines3.append(y)
+	file_write.writelines(lines3)
 	file_read.close()
 	file_write.close()
 
