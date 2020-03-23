@@ -1,4 +1,4 @@
-#from common_backend import *
+from common_backend import *
 #use memory and data_ptr
 #.byte, .half, .word, .dword, .asciiz
 
@@ -10,7 +10,7 @@ class BigData(Exception):
 	pass
 
 dict = {}
-ptr = 0
+ptr = 0x10000000
 def asembler_directives():
 	global ptr
 	asmdirinp = open("Asmdirinp.txt", "r")
@@ -25,32 +25,36 @@ def asembler_directives():
 			lien_list = lien.split(',')
 			while ("" in lien_list):
 				lien_list.remove("")
-#			print(lien_list)
 			if (lien_list[0] != '.data' and lien_list[0] != '.text'):
 				if (lien_list[0] == '.byte'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
 					for data in data_list:
+						if (int(data) < 0):
+							data = int(data)
+							data = data + pow(2, 8)
+							data = str(data)
 						if (int(data) > 0xff):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data)
-						print(dict[ptr])
 						ptr = ptr + 1
 						
 				elif (lien_list[0] == '.asciiz'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
 					for data in data_list:
-						#print(data + '-------')
 						for ch in data[1:-1]:
 							dict[ptr] = ord(ch)
-							print(ch)
 							ptr = ptr + 1
 					
 				elif (lien_list[0] == '.half'):
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
 					for data in data_list:
+						if (int(data) < 0):
+							data = int(data)
+							data = data + pow(2, 16)
+							data = str(data)
 						if (int(data) > 0xffff):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
@@ -64,6 +68,10 @@ def asembler_directives():
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
 					for data in data_list:
+						if (int(data) < 0):
+							data = int(data)
+							data = data + pow(2, 32)
+							data = str(data)
 						if (int(data) > 0xffffffff):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
@@ -79,7 +87,11 @@ def asembler_directives():
 					lien_list.remove(lien_list[0])
 					data_list = lien_list
 					for data in data_list:
-						if (int(data) > 0xffffffff):
+						if (int(data) < 0):
+							data = int(data)
+							data = data + pow(2, 64)
+							data = str(data)
+						if (int(data) > 0xffffffffffffffff):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
 						ptr = ptr + 1
@@ -103,7 +115,6 @@ def asembler_directives():
 					#unrecognised assembler directive
 				
 			
-#			print(lien_list)
 	
 	
 	return dict
