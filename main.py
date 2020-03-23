@@ -59,7 +59,6 @@ def main1():
     for x in lines:
         oper= x.split()[0]
         #print (x)
-        #print(oper[0])
         if('.' not in x and ':' not in x):
             if oper not in dict:
                  raise MyException('Error, unrecognized instruction')
@@ -77,9 +76,9 @@ def main1():
             elif format_type=='I':
                 y=I_Format(x)
                 lines3.append(y)
-            #elif format_type=='SB':
-            #    y=SB_Format(x)
-             #   lines3.append(y) 
+            elif format_type=='SB':
+                y=SB_Format(x)
+                lines3.append(y) 
             elif format_type=='UJU':
                 y=UJU_Format(x)
                 lines3.append(y)
