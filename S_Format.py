@@ -15,13 +15,17 @@ def SFormat(instruction):
         instruction_arr.remove('')
     (instruction_arr[2], instruction_arr[3]) = (instruction_arr[3], instruction_arr[2])
     machine_code = []
-    if int(instruction_arr[3]) < 2**12:
-        immediate=bin(int(instruction_arr[3])).replace("0b","").rjust(12,'0')
+    if int(instruction_arr[3]) < 2**11 and int(instruction_arr[3]) >= -(2**11):
+        if(int(instruction_arr[3]))>=0:
+            immediate=bin(int(instruction_arr[3])).replace("0b","").rjust(12,'0')
+        else:
+            immediate=bin(2**12-int(instruction_arr[3])).replace("0b","").rjust(12,'0')
         imm1=str(immediate)[0:7]
         imm2= str(immediate)[7:12]
         machine_code.append(imm1)
     else:
-        print("Immediate value too large. Must be less than " + str(2**12))
+        print("Immediate value not in appropriate bounds")
+        return
 
     instruction_arr[1] = instruction_arr[1].replace('x', '')
     instruction_arr[2] = instruction_arr[2].replace('x', '')
