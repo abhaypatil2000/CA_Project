@@ -65,7 +65,7 @@ def main1():
         if format_type=='S':
             y=S_Format(x)
             lines3.append(y)
-        """elif format_type=='R':
+        elif format_type=='R':
             y=R_Format(x)
             lines3.append(y)
         elif format_type=='I':
@@ -78,7 +78,7 @@ def main1():
             y=UJU_Format(x)
             lines3.append(y)
         else:
-            print('Error, unrecognized instruction')"""
+            print('Error, unrecognized instruction')
         lines3.append('\n')        
     file_write.writelines(lines3)
     file_read.close()
