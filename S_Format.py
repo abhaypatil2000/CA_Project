@@ -6,7 +6,7 @@ mnemonic = {
     'sd': {'opcode': '0100011', 'funct3': '011'},
 }
 
-def S_Format(instruction):
+def SFormat(instruction):
     instruction = instruction.replace(')', '')
     instruction = instruction.replace('(', ',')
     instruction = instruction.replace(' ', ',')
