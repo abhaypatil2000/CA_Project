@@ -5,6 +5,7 @@ from SB_format import *
 from S_Format import *
 from common_backend import *
 from Parser import parse
+
 dict = {
     'lui':{'type': 'UJU'},
     'auipc':{'type':'UJU'},
@@ -51,12 +52,16 @@ def main1():
 		lines2.append(line2)
 	lines = lines2.copy()
 	lines3=[]
-	for x in lines:
-		oper= x.split()[0]
-		#print (x)
-		#print(oper)
+   	line_no=0
+    	for x in lines:
+        	oper= x.split()[0]
+        	#print (x)
+        	#print(oper)
 		format_type=dict[oper]['type']
 		#print(format_type)
+		line_no=line_no+4
+		lines3.append('0x'+str(line_no))
+		lines3.append(' ')
 		if format_type=='S':
 		    y=S_Format(x)
 		    lines3.append(y)
@@ -69,13 +74,15 @@ def main1():
 		elif format_type=='SB':
 		    y=SB_Format(x)
 		    lines3.append(y) 
-		else:
+		elif format_type=='UJU':
 		    y=UJU_Format(x)
 		    lines3.append(y)
-		lines3.append('\n')	
-	file_write.writelines(lines3)
-	file_read.close()
-	file_write.close()
+		else:
+		    print('Error, unrecognized instruction')
+		lines3.append('\n')        
+    	file_write.writelines(lines3)
+  	file_read.close()
+   	file_write.close()
 
 # def main1():
 # 	file_read = open("input.txt", "r")
