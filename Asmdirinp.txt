@@ -1,0 +1,8 @@
+.data
+write :.byte 0
+option : .byte 51, 2, 3, 4, 5
+size : .byte 5
+array : .word 10, -20, 30, 40, 50
+limits : .word 5, 40, 35
+.asciiz 'hello","helo'
+.text

@@ -1,10 +1,10 @@
-from common_backend import reg_file
+from common_backend import *
 
 #RA is the first operand of the ALU
 #RB is the second operand of the ALU
 #tempdrd contains the register to which we will write
 
-prog_ptr = 123
+#RA, RB, tempdrd, offset, label, 
 
 def Decode(x):#x is a string
 	decode_op = x[25:32]#op is the opcode
@@ -55,11 +55,11 @@ def Decode(x):#x is a string
 			RA = 0
 		elif (decode_op == '0010111'): # auipc
 			RB = int(x[0:20].ljust(32, '0'), 2)
-			RA = prog_ptr
+			RA = prog_ctr
 		elif (decode_op == '1101111'): # jal
 			RB = 2 * int(x[0:20], 2)
 			#RB = int((x[0] + x[12:20] + x[11] + x[1:11]).ljust(32, '0'), 2)
-			RA = prog_ptr
+			RA = prog_ctr
 
 #in the end do reg_file[tempdrd] = RY
 
