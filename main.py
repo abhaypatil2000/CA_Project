@@ -59,8 +59,8 @@ def main1():
     for x in lines:
         oper= x.split()[0]
         #print (x)
-        print(oper[0])
-        if(oper[0]!='.' and oper[-1]!=':' and oper[0]!='#'):
+        #print(oper[0])
+        if('.' not in x and ':' not in x):
             if oper not in dict:
                  raise MyException('Error, unrecognized instruction')
             format_type=dict[oper]['type']
