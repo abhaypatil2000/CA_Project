@@ -1,8 +1,10 @@
 import re
 from common_backend import *
 
-def parse(line):
-    label = re.compile("\A\w+\:")
+label_instructions = ['jal', 'beq']
+
+def parse(line, num):
+    label = re.compile("(\A\w+)\:")
     label_matches = label.search(line)
 
     instruction = re.compile("((\w)+\s)+")
@@ -11,8 +13,14 @@ def parse(line):
     data = re.compile("\.(\w+)")
     data_matches = data.search(line)
 
-    print(label_matches)
-    print(instruction_matches)
+    if(label_matches != None):
+        label_dict[label_matches.group(1)] = 4*num
 
-parse("addi x2 x4 123")
-parse("abc:")
+    if(instruction_matches != None):
+        if()
+
+    print(label_dict)
+
+parse("addi x2 x4 123", 2)
+parse("abc:", 14)
+parse(".word", 1)
