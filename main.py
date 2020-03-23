@@ -64,8 +64,8 @@ def main1():
                  raise MyException('Error, unrecognized instruction')
             format_type=dict[oper]['type']
             #print(format_type)
-            line_no=line_no+4
             lines3.append('0x'+str(line_no))
+	    line_no=line_no+4
             lines3.append(' ')
             if format_type=='S':
                 y=S_Format(x)
