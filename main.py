@@ -72,6 +72,7 @@ def main1():
 		else:
 		    y=UJU_Format(x)
 		    lines3.append(y)
+		lines3.append('\n')	
 	file_write.writelines(lines3)
 	file_read.close()
 	file_write.close()
