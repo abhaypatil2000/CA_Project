@@ -1,6 +1,9 @@
 import re
 from UJU_format import UJU_Format
 
+class MyException(Exception):
+    pass
+
 mnemonic_I = {
     'addi': {'opcode': '0010011', 'funct3': '000', 'type': 'value', 'label': False},
     'andi': {'opcode': '0010011', 'funct3': '111', 'type': 'value', 'label': False},
@@ -23,14 +26,36 @@ def I_Format0(instruction, x):
 
     machine_code = []
     mnemonic = matches.group(1)
-    rd = matches.group(2).replace('x', '')
+    try:
+        rd = matches.group(2).replace('x', '')
+    except:
+        raise MyException("One or more arguements is missing!")
+
     imm_neg = 0
     if matches.group(4) != None:
-        rs = matches.group(3).replace('x', '')
-        imm = matches.group(5)
+        try:
+            rs = matches.group(3).replace('x', '')
+            imm = matches.group(5)
+        except:
+            raise MyException("One or more arguements is missing!")
+
+        try:
+            int(imm)
+        except:
+            raise MyException("Immediate Value must be an Integer!")
+
+
     elif matches.group(5) == None:
+
+        if mnemonic_I[mnemonic]['label'] == False:
+            raise MyException("One or more arguements is missing!")
+
         rs = rd
         addr = matches.group(3)
+
+        if addr[0:2] != "0x":
+            raise MyException("One or more arguements is missing!")
+
         UJU_Format('lui x{} {}'.format(rs, addr[0:6]))
         machine_code = I_Format0(mnemonic + ' ' + rs + ' 0(' + rs + ')', x + 1)
     else:
@@ -39,6 +64,15 @@ def I_Format0(instruction, x):
         rs = rs.replace(')', '')
         rs = rs.replace('x', '')
         imm = matches.group(3)
+
+    if int(rs) > 31:
+        raise MyException("register x" + rs + " not defined")
+
+    if int(rd) > 31:
+        raise MyException("register x" + rd + " not defined")
+
+    if int(imm) > 2047 or int(imm) < -2048:
+        raise MyException("Immediate value out of bounds!")
 
     if imm[0] == '-':
         imm = imm.replace('-', '')
@@ -51,16 +85,22 @@ def I_Format0(instruction, x):
             machine_code.append(bin(int(imm)).replace("0b", "").rjust(12, '0'))
         else:
             imm = bin(int(imm)).replace("0b", "").rjust(12, '0')
+
             for i in range(len(imm)):
                 if imm[i] == '0':
                     imm = imm[:i] + '1' + imm[i+1:]
                 else:
                     imm = imm[:i] + '0' + imm[i+1:]
+
+
             machine_code.append(imm)
+
+
         machine_code.append(bin(int(rs)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['funct3'])
         machine_code.append(bin(int(rd)).replace("0b", "").rjust(5, '0'))
         machine_code.append(mnemonic_I[mnemonic]['opcode'])
+
 
     if (x == 0):
         machine_hex="{:08x}".format(int(''.join(machine_code),2))
@@ -71,4 +111,4 @@ def I_Format0(instruction, x):
 
 
 
-print(I_Format("addi x2 x3 -3"))
+print(I_Format("addi x10 x20 30"))
