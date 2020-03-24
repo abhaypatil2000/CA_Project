@@ -202,8 +202,6 @@ def fetch():
         PC = PC + ImmGenOutput << 1
     ReadAddress = PC
     Instruction = "{:032b}".format(int(read_word(ReadAddress),16))
-    print("ReadAddress " + str(ReadAddress))
-    print("Instruction " + Instruction)
 def decode():
         #Control Signals
     global Branch 
@@ -270,8 +268,6 @@ def decode():
         opcode = Instruction[25:]
         func3 = Instruction[17:20]
         func7 = Instruction[0:7]
-        print('opcode '+opcode)
-        print('func3 '+func3)
         ReadRegister1 = int(Instruction[12:17], 2)
         ReadRegister2 = int(Instruction[7:12], 2)
         WriteRegister = int(Instruction[20:25], 2)
@@ -356,10 +352,6 @@ def decode():
             ALUControl = 7
         ReadData1 = reg_file['x' + str(ReadRegister1)]
         ReadData2 = reg_file['x'+str(ReadRegister2)]
-        print('PCReg '+str(PCReg))
-        print('Immediate Gen Ouput ' + str(ImmGenOutput))
-        print('Write Reg '+str(WriteRegister))
-        print("MemWrite " + str(MemWrite))
 def execute():
         #Control Signals
     global Branch 
@@ -476,7 +468,6 @@ def execute():
         PCSrc = 1
     elif(opcode == '1101111'):
         PCSrc = 1
-    print('PCSrc '+str(PCSrc))
 def memory_access():
         #Control Signals
     global Branch 
@@ -639,20 +630,32 @@ def writeback():
             reg_file['x' + str(WriteRegister)] = BitArray(hex = ReadData[8:]).int
             reg_file['x' + str((WriteRegister + 1) % 32)] = BitArray(hex = ReadData[0:8]).int
     reg_file['x0'] = 0
-    print(reg_file)
+PCList = []
+MemList = []
+RegList = []
+count = 0
+InstCount = 0
 def main3():
     global clock
+    global MemList
+    global RegList
+    global PCList
+    global count
+    global InstCount
     initialize_mem()
-    print(TempMem)
+    MemList.append(TempMem)
+    RegList.append(reg_file)
     while(True):
         fetch()
+        PCList.append(PC)
         decode()
         execute()
         memory_access()
         writeback()
+        MemList.append(TempMem)
+        RegList.append(reg_file)
         clock = clock + 1
-        print(clock)
+        InstCount = InstCount + (0 if EXIT else 1)
         if(EXIT):
-            print(TempMem)
             break
 main3()
