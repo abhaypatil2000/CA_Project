@@ -6,6 +6,7 @@ from S_Format import *
 from common_backend import *
 from Parser import parse
 
+line_no =0
 class MyException(Exception):
     pass
 
@@ -45,6 +46,7 @@ dict = {
 
 def main1():
     file_read = open("input.txt","r")
+    file_write1 = open("1.mc","w")
     file_write = open("output.mc","w")
     lines =file_read.readlines()
     print(lines)
@@ -55,7 +57,7 @@ def main1():
         lines2.append(line2)
     lines = lines2.copy()
     lines3=[]
-    line_no=0
+    global line_no
     for x in lines:
         oper= x.split()[0]
         #print (x)
@@ -95,8 +97,11 @@ def main1():
             memptr1=hex(int(memptr,16)+p)
             lines4.append(memptr1+' '+str(hex(q))+'\n')
     file_write.writelines(lines4)
+    file_write1.writelines(lines3)
     file_read.close()
     file_write.close()
+    file_write1.close()
+
 
 
 # def main1():
