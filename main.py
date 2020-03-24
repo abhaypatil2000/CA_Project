@@ -44,8 +44,8 @@ dict = {
     'bge':{'type':'SB'}
     }
 
-def main1():
-    file_read = open("input.txt","r")
+def main1(file_name):
+    file_read = open(file_name,"r")
     file_write1 = open("1.mc","w")
     file_write = open("output.mc","w")
     lines =file_read.readlines()
