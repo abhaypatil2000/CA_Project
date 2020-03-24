@@ -12,19 +12,19 @@ def R_Format(input):
     elif y.group('rd') == None:
         print('Expected 3 arguments found none')
         return
-    elif int(y.group('rd')) > 31 or y.group('rd')[0] == '0':
+    elif int(y.group('rd')) > 31 or (y.group('rd')[0] == '0' and y.group('rd') != '0'):
         print('Register x' + y.group('rd') + ' is not recognized')
         return
     elif y.group('rs1') == None:
         print('Expected 3 arguments but got 1')
         return
-    elif int(y.group('rs1')) > 31 or y.group('rs1')[0] == '0':
+    elif int(y.group('rs1')) > 31 or (y.group('rs1')[0] == '0' and y.group('rs1') != '0'):
         print('Register x' + y.group('rs1') + ' is not recognized')
         return
     elif y.group('rs2') == None:
         print('Expected 3 arguments but got 2')
         return
-    elif int(y.group('rs1')) > 31 or y.group('rs2')[0] == '0':
+    elif int(y.group('rs1')) > 31 or (y.group('rs2')[0] == '0' and y.group('rs2') != '0'):
         print('Register x' + y.group('rs2') + ' is not recognized')
         return
     else:
@@ -42,4 +42,4 @@ def R_Format(input):
             machine_hex='0x'+"{:08x}".format(int(func7 + rs2 + rs1 + func3 + rd + opcode,2))
             return machine_hex
 
-print (R_Format("add x1 x03 x3"))
+print (R_Format("add x1 x0 x3"))
