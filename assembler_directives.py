@@ -14,7 +14,7 @@ ptr = 0x10000000
 def asembler_directives():
 	global ptr
 	ptr = 0x10000000
-	asmdirinp = open("Asmdirinp.txt", "r")
+	asmdirinp = open("input.txt", "r")
 	inplist = asmdirinp.readlines()
 	for lien in inplist:#lien is line
 		if (lien[-1] == '\n'):
@@ -130,4 +130,4 @@ def asembler_directives():
 	asmdirinp.close()
 	
 	
-asembler_directives()
+#asembler_directives()
