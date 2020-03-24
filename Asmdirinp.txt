@@ -1,8 +1,1 @@
-.data
-.word 1231231
-.byte -10
-array : .word -20, 30, 40, 50
-limits : .word 5, 40, 35
-.asciiz "hello"
-.word 1231231
-.text
+.word 1877999244

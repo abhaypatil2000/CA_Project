@@ -13,7 +13,7 @@ dict = {}
 ptr = 0x10000000
 def asembler_directives():
 	global ptr
-	asmdirinp = open("Asmdirinp.txt", "r")
+	asmdirinp = open("input.txt", "r")
 	inplist = asmdirinp.readlines()
 	for lien in inplist:#lien is line
 		if (lien[-1] == '\n'):
@@ -33,8 +33,10 @@ def asembler_directives():
 						if (int(data) < 0):
 							data = int(data)
 							data = data + pow(2, 8)
+							if (data < pow(2, 7)):#128
+								raise BigData("data too big to fit")
 							data = str(data)
-						if (int(data) > 0xff):
+						elif (int(data) >= pow(2, 7)):#128
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data)
 						ptr = ptr + 1
@@ -54,8 +56,10 @@ def asembler_directives():
 						if (int(data) < 0):
 							data = int(data)
 							data = data + pow(2, 16)
+							if (data < pow(2, 15)):
+								raise BigData("data too big to fit")
 							data = str(data)
-						if (int(data) > 0xffff):
+						elif (int(data) >= pow(2, 15)):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
 						ptr = ptr + 1
@@ -71,8 +75,10 @@ def asembler_directives():
 						if (int(data) < 0):
 							data = int(data)
 							data = data + pow(2, 32)
+							if (data < pow(2, 31)):
+								raise BigData("data too big to fit")
 							data = str(data)
-						if (int(data) > 0xffffffff):
+						elif (int(data) >= pow(2, 31)):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
 						ptr = ptr + 1
@@ -90,8 +96,10 @@ def asembler_directives():
 						if (int(data) < 0):
 							data = int(data)
 							data = data + pow(2, 64)
+							if (data < pow(2, 63)):
+								raise BigData("data too big to fit")
 							data = str(data)
-						if (int(data) > 0xffffffffffffffff):
+						elif (int(data) >= pow(2, 63)):
 							raise BigData("data too big to fit")
 						dict[ptr] = int(data) % 0x100
 						ptr = ptr + 1
