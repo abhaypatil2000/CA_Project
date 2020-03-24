@@ -14,6 +14,8 @@ ptr = 0x10000000
 def asembler_directives():
 	global ptr
 	ptr = 0x10000000
+	global dict
+	dict.clear
 	asmdirinp = open("input.txt", "r")
 	inplist = asmdirinp.readlines()
 	for lien in inplist:#lien is line
