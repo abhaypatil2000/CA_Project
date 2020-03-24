@@ -93,14 +93,12 @@ def main1(file_name):
     file_write.writelines(lines3)
     asmdirdict=asembler_directives()
     #print(asmdirdict)
-    memptr='0x10000000'
+    #memptr='0x10000000'
     lines4=[]
     for p, q in asmdirdict.items():
-        if q!=0:
-            memptr1=hex(int(memptr,16)+p)
-            lines4.append(memptr1+' '+str(hex(q))+'\n')
+    	lines4.append(hex(p)+' '+hex(q)+'\n')
     file_write.writelines(lines4)
-    #file_write1.writelines(lines3)
+    file_write1.writelines(lines3)
     file_read.close()
     file_write.close()
     file_write1.close()
