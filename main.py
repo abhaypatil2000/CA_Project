@@ -66,7 +66,7 @@ def main1(file_name):
                  raise MyException('Error, unrecognized instruction')
             format_type=dict[oper]['type']
             #print(format_type)
-            lines3.append('0x'+hex(line_no))
+            lines3.append(hex(line_no))
 	    line_no=line_no+4
             lines3.append(' ')
             if format_type=='S':
@@ -97,7 +97,7 @@ def main1(file_name):
             memptr1=hex(int(memptr,16)+p)
             lines4.append(memptr1+' '+str(hex(q))+'\n')
     file_write.writelines(lines4)
-    file_write1.writelines(lines3)
+    #file_write1.writelines(lines3)
     file_read.close()
     file_write.close()
     file_write1.close()
