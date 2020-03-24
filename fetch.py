@@ -64,7 +64,7 @@ def fetch():
     elif(PCSrc == 0):
         PC = PC + 4
     elif(PCSrc == 1):
-        PC = PC + ImmGenOutput << 1
+        PC = PC + (ImmGenOutput << 1)
     ReadAddress = PC
     Instruction = "{:032b}".format(int(read_word(ReadAddress),16))
     print("ReadAddress " + str(ReadAddress))
