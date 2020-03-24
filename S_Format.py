@@ -40,6 +40,11 @@ def S_Format(instruction):
     instruction_arr[1] = instruction_arr[1].replace('x', '')
     instruction_arr[2] = instruction_arr[2].replace('x', '')
     #########################
+    try:
+        int(instruction_arr[1])
+        int(instruction_arr[2])
+    except:
+        raise MyException("Register number must be an Integer!")
     if(int(instruction_arr[1])>31 or int(instruction_arr[2])>31):
         raise MyException("Register number must be between 0 and 31, both inclusive.")
     #########################
