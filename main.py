@@ -4,8 +4,10 @@ from R_Format import *
 from SB_format import *
 from S_Format import *
 from common_backend import *
-from Parser import parse
+from Parser import *
+from assembler_directives import *
 
+line_no =0
 class MyException(Exception):
     pass
 
@@ -27,7 +29,7 @@ dict = {
     'jalr': {'type': 'I'},
     'add':{'type':'R'},
     'and':{'type':'R'},
-    'or':{'type':'R'}, 
+    'or':{'type':'R'},
     'sll':{'type':'R'},
     'slt':{'type':'R'},
     'sra':{'type':'R'},
@@ -43,29 +45,32 @@ dict = {
     'bge':{'type':'SB'}
     }
 
-def main1():
-    file_read = open("input.txt","r")
+def main1(file_name):
+    file_read = open(file_name,"r")
+    file_write1 = open("1.mc","w")
     file_write = open("output.mc","w")
     lines =file_read.readlines()
-    print(lines)
     lines=[val for val in lines if val!='\n']
     lines2 = []
     for line in lines:
-        line2=line.replace('\n',' ')
+        line2=line.replace('\n','')
         lines2.append(line2)
     lines = lines2.copy()
+    lines = parseDoc(lines)
+    print(lines)
     lines3=[]
-    line_no=0
+    global line_no
     for x in lines:
         oper= x.split()[0]
         #print (x)
+        # print(oper)
         if('.' not in x and ':' not in x):
             if oper not in dict:
                  raise MyException('Error, unrecognized instruction')
             format_type=dict[oper]['type']
             #print(format_type)
-            lines3.append('0x'+str(line_no))
-	    line_no=line_no+4
+            lines3.append(hex(line_no))
+            line_no=line_no+4
             lines3.append(' ')
             if format_type=='S':
                 y=S_Format(x)
@@ -77,14 +82,14 @@ def main1():
                 y=I_Format(x)
                 lines3.append(y)
             elif format_type=='SB':
-                y=SB_Format(x)
-                lines3.append(y) 
+                y=SB_format(x)
+                lines3.append(y)
             elif format_type=='UJU':
                 y=UJU_Format(x)
                 lines3.append(y)
             else:
                 raise MyException('Error, unrecognized instruction')
-            lines3.append('\n')   
+            lines3.append('\n')
     file_write.writelines(lines3)
     asmdirdict=asembler_directives()
     #print(asmdirdict)
@@ -95,8 +100,11 @@ def main1():
             memptr1=hex(int(memptr,16)+p)
             lines4.append(memptr1+' '+str(hex(q))+'\n')
     file_write.writelines(lines4)
+    #file_write1.writelines(lines3)
     file_read.close()
     file_write.close()
+    file_write1.close()
+
 
 
 # def main1():
@@ -122,4 +130,4 @@ def main2():
 
 
 
-main1()
+main1('input.txt')

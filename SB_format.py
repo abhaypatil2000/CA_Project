@@ -12,20 +12,43 @@ isa={
      'bge' :{'opcode':'1100011', 'fun3':'101'}
      }
 
+class MyException(Exception):
+    pass
+
 def SB_format(instruction):
     instruction=instruction.replace(" ",",")
     instruction_arr=instruction.split(",")
-    
+
     while "" in instruction_arr:
         instruction_arr.remove("")
-        
+
+    ############################################################################
+    if(len(instruction_arr)!=4):
+        raise MyException("Expected three arguements!")
+    try:
+        int(instruction_arr[3])
+    except:
+        raise MyException("Offset Value must be an Integer!")
+    if int(instruction_arr[3]) > 4094 or int(instruction_arr[3]) < -4096:
+        raise MyException("Immediate value out of bounds!")
+   ###############################################################################
+
     machine_code=[]
-    immediate=bin(int(instruction_arr[3])).replace("0b","").rjust(12,'0')
+    if (int(instruction_arr[3]))>=0:
+        immediate=bin(int(instruction_arr[3])).replace("0b","").rjust(12,'0')
+    else:
+        immediate=bin(2**12+int(instruction_arr[3])).replace("0b","").rjust(12,'0')
+
     immediate_rev=immediate[::-1]
-    
+
     instruction_arr[1]=instruction_arr[1].replace('x','')
     instruction_arr[2]=instruction_arr[2].replace('x','')
-    
+
+    #########################
+    if(int(instruction_arr[1])>31 or int(instruction_arr[2])>31):
+        raise MyException("Register number must be between 0 and 31, both inclusive.")
+    #########################
+
     machine_code.append(immediate_rev[11])
     machine_code.append(immediate_rev[5:10])
     machine_code.append(bin(int(instruction_arr[2])).replace("0b", "").rjust(5, '0'))
@@ -37,9 +60,8 @@ def SB_format(instruction):
     print(machine_code)
     while "" in machine_code:
         machine_code.remove("")
-        
+
     machine_bin=machine_code[0]+machine_code[1]+machine_code[2]+machine_code[3]+machine_code[4]+machine_code[5]+machine_code[6]+machine_code[7]
     machine_hex="{:08x}".format((int(machine_bin,2)))
     return "0x" + machine_hex
     
-print(SB_format("bge x0 x0 12"))
