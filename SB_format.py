@@ -28,7 +28,7 @@ def SB_format(instruction):
     try:
         int(instruction_arr[3])
     except:
-        raise MyException("Offset Value must be an Integer!")
+        raise MyException("Immediate Value must be an Integer!")
     if int(instruction_arr[3]) > 4094 or int(instruction_arr[3]) < -4096:
         raise MyException("Immediate value out of bounds!")
    ###############################################################################
