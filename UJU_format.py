@@ -29,8 +29,10 @@ def UJU_Format(instruction):#check for negative numbers
 	imm_final = ''#after rearrangement
 	
 	for ch in imm_temp:
-		if (ch != [0-9]):
+		if (ch not in ['0','1','2','3','4','5','6','7','8','9']):
 			raise SntxErr("Not a decimal number")
+	if int(imm_temp) >= 2**19 or int(imm_temp) < -(2**19):
+        	raise MyException("Immediate value out of bounds!")
 	op = str(mnemonic[op]['opcode'])
 	rd = str(bin(int(rd.replace('x', '')))).replace('0b', '').rjust(5, '0')
 	imm_temp = str(bin(int(imm_temp, 0))).replace('0b', '').rjust(32, '0')[11:32]##now we have 21 bits from lsb excl
