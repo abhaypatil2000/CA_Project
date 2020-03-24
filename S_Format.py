@@ -35,6 +35,8 @@ def SFormat(instruction):
     imm1=str(immediate)[0:7]
     imm2= str(immediate)[7:12]
     machine_code.append(imm1)
+    if 'x' not in instruction_arr[1] or 'x' not in instruction_arr[2]:
+        raise MyException("Enter register numbers in correct format")
     instruction_arr[1] = instruction_arr[1].replace('x', '')
     instruction_arr[2] = instruction_arr[2].replace('x', '')
     #########################
