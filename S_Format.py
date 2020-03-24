@@ -1,7 +1,7 @@
 class MyException(Exception):
     pass
 mnemonic = {
-  
+
     'sb': {'opcode': '0100011', 'funct3': '000'},
     'sh': {'opcode': '0100011', 'funct3': '001'},
     'sw': {'opcode': '0100011', 'funct3': '010'},
@@ -26,12 +26,12 @@ def SFormat(instruction):
         raise MyException("Offset Value must be an Integer!")
     if int(instruction_arr[3]) >= 2**11 or int(instruction_arr[3]) < -(2**11):
         raise MyException("Immediate value out of bounds!")
-    ##################   
+    ##################
     if(int(instruction_arr[3]))>=0:
         immediate=bin(int(instruction_arr[3])).replace("0b","").rjust(12,'0')
     else:
         immediate=bin(2**12+int(instruction_arr[3])).replace("0b","").rjust(12,'0')
-        
+
     imm1=str(immediate)[0:7]
     imm2= str(immediate)[7:12]
     machine_code.append(imm1)
@@ -40,7 +40,7 @@ def SFormat(instruction):
     #########################
     if(int(instruction_arr[1])>31 or int(instruction_arr[2])>31):
         raise MyException("Register number must be between 0 and 31, both inclusive.")
-    #########################    
+    #########################
     machine_code.append(bin(int(instruction_arr[1])).replace("0b", "").rjust(5, '0'))
     machine_code.append(bin(int(instruction_arr[2])).replace("0b", "").rjust(5, '0'))
     machine_code.append(mnemonic[instruction_arr[0]]['funct3'])
@@ -48,5 +48,3 @@ def SFormat(instruction):
     machine_code.append(mnemonic[instruction_arr[0]]['opcode'])
     machine_hex="{:08x}".format(int(''.join(machine_code),2))
     return "0x"+machine_hex
-
-print(SFormat("sb x1, 4(x3)"))

@@ -106,9 +106,3 @@ def I_Format0(instruction, x):
         machine_hex="{:08x}".format(int(''.join(machine_code),2))
         return "0x"+machine_hex
     return machine_code
-
-
-
-
-
-print(I_Format("addi x10 x20 30"))

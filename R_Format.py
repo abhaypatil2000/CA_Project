@@ -41,5 +41,3 @@ def R_Format(input):
             rs2 = "{:05b}".format(int(y.group('rs2')))
             machine_hex='0x'+"{:08x}".format(int(func7 + rs2 + rs1 + func3 + rd + opcode,2))
             return machine_hex
-
-print (R_Format("add x1 x0 x3"))
