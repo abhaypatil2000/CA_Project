@@ -35,7 +35,7 @@ def parse(line, num):
                 int(lines[-1])
             except:
                 try:
-                    lines[-1] = int((label_dict[lines[-1]] - 4*num)/2)
+                    lines[-1] = int(label_dict[lines[-1]] - 4*num)
                 except:
                     raise MyException("Label not recognized on line " + str(num))
             line = ' '.join(str(elem) for elem in lines)
